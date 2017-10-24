@@ -1,23 +1,23 @@
 package com.mmsdivino.poi;
 
 public class OverpassData {
-    private Integer id;
+    private long id;
     private Double lat;
     private Double lon;
     private String name;
 
-    public OverpassData(int id, double lat, double lon, String name) {
+    public OverpassData(long id, double lat, double lon, String name) {
         this.id = id;
         this.lat = lat;
         this.lon = lon;
         this.name = name;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 

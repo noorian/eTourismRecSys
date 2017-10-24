@@ -7,13 +7,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class OverlayData {
     private City city;
     private String poiUrl;
     private String name;
-    private HashMap<Integer, POIData> poiDataHashMap;
+    private ArrayList<POIData> poiDataArrayList;
 
     private static String DOMAIN = "http://overpass-api.de/api/interpreter/?data=[out:json];";
     private static String SUFIX = ";(._;%3E;);out;&bbox=";
@@ -22,7 +22,7 @@ public class OverlayData {
         this.city = city;
         this.poiUrl = poiUrl;
         this.name = name;
-        this.poiDataHashMap = new HashMap<Integer, POIData>();
+        this.poiDataArrayList = new ArrayList<POIData>();
     }
 
     public void getPOIData() {
@@ -46,10 +46,7 @@ public class OverlayData {
                         element.getJSONObject("tags").getString("name")
                 );
 
-                this.getPoiDataHashMap().put(
-                        element.getInt("id"),
-                        poiData
-                );
+                this.getPoiDataArrayList().add(poiData);
             }
         });
     }
@@ -62,7 +59,7 @@ public class OverlayData {
 
     private OverpassData newOverpassDataObject(JSONObject element) {
         OverpassData overpassData = new OverpassData(
-                element.getInt("id"),
+                element.getLong("id"),
                 element.getDouble("lat"),
                 element.getDouble("lon"),
                 element.getJSONObject("tags").getString("name")
@@ -93,10 +90,10 @@ public class OverlayData {
         try {
             FileWriter writer = new FileWriter(file);
 
-            this.getPoiDataHashMap().forEach((Integer k, POIData v) -> {
+            this.getPoiDataArrayList().forEach((POIData v) -> {
                 Double lat = v.getOverpassData().getLat();
                 Double lon = v.getOverpassData().getLon();
-                Integer poiId = v.getOverpassData().getId();
+                long poiId = v.getOverpassData().getId();
                 v.getgMapsData().getReviews().forEach((User user) -> {
                     try {
                         writer.write(
@@ -111,6 +108,8 @@ public class OverlayData {
                     }
                 });
             });
+
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,12 +131,12 @@ public class OverlayData {
         this.poiUrl = poiUrl;
     }
 
-    public HashMap<Integer, POIData> getPoiDataHashMap() {
-        return poiDataHashMap;
+    public ArrayList<POIData> getPoiDataArrayList() {
+        return poiDataArrayList;
     }
 
-    public void setPoiDataHashMap(HashMap<Integer, POIData> poiDataHashMap) {
-        this.poiDataHashMap = poiDataHashMap;
+    public void setPoiDataArrayList(ArrayList<POIData> poiDataArrayList) {
+        this.poiDataArrayList = poiDataArrayList;
     }
 
     public String getName() {

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class GMapsData {
     private ArrayList<User> reviews;
-    protected static String API_KEY = "AIzaSyCPgZli7mcB3puwTywi5K613umH1mSrVfk";
+    protected static String API_KEY = "";
 
     public GMapsData() {
         this.reviews = new ArrayList<User>();
@@ -52,12 +52,23 @@ public class GMapsData {
             JSONObject review = (JSONObject) item;
 
             User user = new User(
-                    review.getString("authorName").hashCode(),
+                    this.longHash(review.getString("authorName")),
                     review.getDouble("rating")
             );
 
             this.getReviews().add(user);
         });
+    }
+
+    private long longHash(String string) {
+        long h = 98764321261L;
+        int l = string.length();
+        char[] chars = string.toCharArray();
+
+        for (int i = 0; i < l; i++) {
+            h = 31*h + chars[i];
+        }
+        return h;
     }
 
     public ArrayList<User> getReviews() {

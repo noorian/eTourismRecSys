@@ -19,11 +19,12 @@ import java.util.List;
 
 public class Driver {
 
-    private void getRecommendations() {
+    public static void getRecommendations() {
         try {
             // recommender configuration
             Configuration conf = new Configuration();
             conf.set("dfs.data.dir", "data");
+            conf.set("data.input.path", "googlemaps/rating");
             conf.set("dfs.result.dir", "result");
             conf.set("rec.neighbors.knn.number", "50");
             conf.set("rec.recommender.isranking", "false");
