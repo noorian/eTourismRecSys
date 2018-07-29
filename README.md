@@ -1,3 +1,3 @@
 # eTourismRecSys
 
-Recommender system using LibRec, Google Maps API and Overpass API.
+Recommender system for points of interests using LibRec, Google Maps API and Overpass API.
